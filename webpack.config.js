@@ -1,6 +1,6 @@
 'use strict';
 
-const NODE_ENV = process.env.NODE_ENV || 'development';
+var load = require('lodash');
 
 const webpack = require('webpack');
 const rimraf = require('rimraf');
@@ -8,6 +8,8 @@ const BowerWebpackPlugin = require('bower-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const autoprefixer = require('autoprefixer');
+
+var path = require("path");
 
 const autoprefixerOptions = {
     browsers: [
@@ -23,7 +25,10 @@ const autoprefixerOptions = {
 module.exports = {
     context: __dirname + '/dev',
 
-    entry:   "js/main.js",
+    entry:   {
+       bundle: './dev/app.js',
+       styles: './dev/main.scss'
+},
     output:  {
         path: __dirname + '/prod/build',
         publicPath: "/prod/",
@@ -70,7 +75,7 @@ module.exports = {
             modulesDirectories: ['bower_components'],
             manifestFiles: ['bower.json', '.bower.json'],
             includes: /.*/,
-            excludes: /.*\.less$/
+            excludes: /.*\.scss$/
         }),
         new webpack.NoErrorsPlugin(),
         new webpack.DefinePlugin({
