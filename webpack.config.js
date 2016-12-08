@@ -1,66 +1,61 @@
 'use strict';
 
-var load = require('lodash');
-
+const NODE_ENV = process.env.NODE_ENV || 'development';
+// const load = require('lodash');
 const webpack = require('webpack');
 const rimraf = require('rimraf');
 const BowerWebpackPlugin = require('bower-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const autoprefixer = require('autoprefixer');
+const AssetsPlugin = require('assets-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-var path = require("path");
-
-const autoprefixerOptions = {
-    browsers: [
-        'last 2 versions',
-        'iOS >= 7',
-        'Android >= 4',
-        'Explorer >= 10',
-        'ExplorerMobile >= 11'
-    ],
-    cascade: false
-};
+function addHash(template, hash) {
+    return NODE_ENV == 'production'? template.replace(/\.[^.]+$/, `.[${hash}]$&`) : `${template}?hash=[${hash}]`;
+}
 
 module.exports = {
-    context: __dirname + '/dev',
+    context: __dirname + '\\frontend',
 
     entry:   {
-       bundle: './dev/app.js',
-       styles: './dev/main.scss'
-},
+        main: './main'
+    },
     output:  {
-        path: __dirname + '/prod/build',
-        publicPath: "/prod/",
-        filename: 'js/[name].js',
+        path: __dirname + '\\public',
+        publicPath: '/',
+        filename: addHash('[name].js', 'chunkhash'),
+        chunkFilename: addHash('[id].js', 'chunkhash'),
         library: '[name]'
     },
     module:  {
         loaders: [
             {
-                test:   /\.css$/,
-                loader: "style-loader!css-loader!postcss-loader"
-            },
-            {
-                test: /\.scss$/,
-                loader: ExtractTextPlugin.extract('style', 'css!autoprefixer?'+ JSON.stringify(autoprefixerOptions) +'!sass?resolve url')
-            },
-            {
                 test: /\.js$/,
-                exclude: /(node_modules|bower_components)/,
+                exclude: /(node_modules)/,
                 loader: 'babel',
                 query: {
                     presets: ['es2015'],
                     plugins: ['transform-runtime']
                 }
             },
+            {
+                test:   /\.css$/,
+                loader:ExtractTextPlugin.extract('style!css')
+            },
+            {
+                test: /\.scss$/,
+                loader: ExtractTextPlugin.extract('css!resolve-url!sass?sourceMap')
+            },
+
             { test: /\.json$/, loader: 'json' },
+
             // { test:   /\.jade$/, loader: "jade" },
-            // { test: /\.styl$/, loader: 'style!css!autoprefixer?'+ JSON.stringify(autoprefixerOptions) },
+            // { test: /\.styl$/, loader: 'style!css!autoprefixer?'+ JSON.stringify},
 
             {
                 test: /\.(eot|woff|ttf|svg|png|jpg)$/,
-                loader: 'url-loader?limit=30000&name=[path][name]-[hash].[ext]'
+                loader: addHash('url-loader?limit=30000&name=[path][name].[ext]', 'hash:4')
             }
         ]
     },
@@ -68,7 +63,11 @@ module.exports = {
 
     watch: NODE_ENV == 'development',
 
-    devtool: NODE_ENV == 'development' ? 'source-map' : null,
+    watchOptions: {
+        aggregateTimeout: 100
+    },
+
+    devtool: NODE_ENV == 'development' ? "cheap-inline-module-source-map" : null,
 
     plugins: [
         new BowerWebpackPlugin({
@@ -79,21 +78,36 @@ module.exports = {
         }),
         new webpack.NoErrorsPlugin(),
         new webpack.DefinePlugin({
-            NODE_ENV: JSON.stringify( NODE_ENV )
+            NODE_ENV: JSON.stringify(NODE_ENV),
+            LANG: JSON.stringify('ru')
         }),
-        new ExtractTextPlugin('css/[name].css?[hash]', {allChunks: true}),
+        new ExtractTextPlugin(addHash('css/[name].css', 'contenthash'), {allChunks: true}),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'common',
             minChunks: 2
         }),
-        new CopyWebpackPlugin([
-            { from: 'static' }
-        ])
+        // new CopyWebpackPlugin([
+        //     { from: 'static' }
+        // ]),
+        new AssetsPlugin({
+           filename: 'public.json',
+            path: __dirname + '/public'
+        }),
+        // new HtmlWebpackPlugin(), // Generates default index.html
+        // new HtmlWebpackPlugin({  // Also generate a test.html
+        //     filename: 'test.html',
+        //     template: 'src/assets/test.html'
+        // }),
+        {
+            apply: (compiler) => {
+                rimraf.sync(compiler.options.output.path);
+            }
+        }
     ],
 
     resolve: {
         modulesDirectories: ['node_modules'],
-            extensions: ['', '.js']
+            extensions: ['', '.js', '.scss']
     },
 
     resolveLoader: {

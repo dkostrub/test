@@ -1,7 +1,10 @@
-@import "../node_modules/susy/sass/_susy";
+//@import "../node_modules/susy/sass/_susy";
 
-//@import "reset";
-//@import "variables";
+@import "~susy/sass/susy";
+@import "~breakpoint-sass";
+@import "normalize";
+@import "reset";
+@import "variables";
 
 // Susy
 $susy: (
@@ -10,15 +13,16 @@ $susy: (
         math: fluid,
         gutter-position: outside,
 );
+
 html,body{
   font-family: $font-family-default;
-  font-size:$font-size-default;
-  line-height:$line-height;
-  color:$color-text;
+  font-size: $font-size-default;
+  line-height: $line-height;
+  color: $color-text;
   background-color: $color-background;
-  margin:0;
-  padding:0;
-  overflow-x:hidden;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 a{
@@ -27,12 +31,12 @@ a{
 
 .container{
   @include container($container);
-  background-color:$white;
+  background-color: $white;
 }
 
 .page-content{
-  padding:3%;
-  margin:0;
+  padding: 3%;
+  margin: 0;
 }
 
 // ***********************************
@@ -45,15 +49,15 @@ a{
   }
   h2{
     font-size: 1.2em;
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
   }
 
   // Заголовок сайта
   header{
     @include span(12);
-    background-color:$color-secondary;
-    padding:0 1%;
+    background-color: $color-secondary;
+    padding: 0 1%;
     color: $white;
     h2{
       @include span(12);
@@ -65,9 +69,8 @@ a{
     }
     ul{
       list-style-type: none;
-      padding:0;
-      margin:0;
-      padding-left:0.1em;
+      margin: 0;
+      padding-left: 0.1em;
       li{
         display: inline-block;
         a{
@@ -89,8 +92,8 @@ a{
     @include span(12);
 
     article{
-      border:1px solid $color-background;
-      padding:0.5em;
+      border: 1px solid $color-background;
+      padding: 0.5em;
       margin-bottom: 1em;
       p{
         font-size: 0.9em;
@@ -100,7 +103,7 @@ a{
       }
       footer{
         font-size: 0.9em;
-        color:#333;
+        color: #333;
       }
     }
   }
@@ -108,9 +111,9 @@ a{
   .popular-posts{
     @include span(12);
     article{
-      background-color:lighten($color-background, 5%);
-      border:1px solid $color-background;
-      padding:0.5em;
+      background-color: lighten($color-background, 5%);
+      border: 1px solid $color-background;
+      padding: 0.5em;
       margin-bottom: 1em;
       a{
         color: darken($color-background, 20%);;
@@ -120,12 +123,12 @@ a{
   // Подвал
   .footer{
     @include span(12);
-    background-color:$color-secondary;
+    background-color: $color-secondary;
     font-size: 1em;
-    padding:0.5em 1%;
+    padding: 0.5em 1%;
     color: $white;
     a{
-      color:lighten( $color-primary, 22%);
+      color: lighten($color-primary, 22%);
       &:hover{
         color: $black;
       }
@@ -144,7 +147,7 @@ a{
   // Заголовок сайта
   header{
     @include span(12);
-    background-color:$color-primary;
+    background-color: $color-primary;
     h2{
       @include span(3);
       font-size: 3em;
@@ -154,7 +157,7 @@ a{
     }
     ul{
       text-align: right;
-      margin-top:0.4em;
+      margin-top: 0.4em;
       li{
         a{
           font-size: 1.7em;
@@ -170,8 +173,8 @@ a{
       h2{
         font-size: 1.8em;
       }
-      border:1px solid $color-background;
-      padding:0.5em;
+      border: 1px solid $color-background;
+      padding: 0.5em;
       margin-bottom: 2em;
       clear: both;
       p{
@@ -189,14 +192,14 @@ a{
   // Популярные посты
   .popular-posts{
     @include span(6);
-    padding-left:1em;
+    padding-left: 1em;
     article{
       h2{
         font-size: 1.8em;
       }
-      background-color:lighten($color-background, 2%);
-      border:1px solid transparent;
-      padding:0.5em;
+      background-color: lighten($color-background, 2%);
+      border: 1px solid transparent;
+      padding: 0.5em;
       margin-bottom: 1em;
       p{
         font-size: $font-size-default+50;
@@ -213,7 +216,7 @@ a{
   // Подвал
   .footer{
     @include span(12);
-    background-color:$color-primary;
+    background-color: $color-primary;
     font-size: 1.5em;
   }
 }
@@ -229,8 +232,8 @@ a{
   // Заголовок сайта
   header{
     @include span(12);
-    background-color:lighten($color-primary, 15%);
-    padding:0%;
+    background-color: lighten($color-primary, 15%);
+    padding: 0;
   }
   // Последние посты
   .latest-posts{
@@ -239,14 +242,14 @@ a{
   // Популярные посты
   .popular-posts{
     @include span(6);
-    padding-left:1em;
+    padding-left: 1em;
     article{
       h2{
         font-size: 1.8em;
       }
-      background-color:lighten($color-background, 2%);
-      border:1px solid transparent;
-      padding:0.5em;
+      background-color: lighten($color-background, 2%);
+      border: 1px solid transparent;
+      padding: 0.5em;
       margin-bottom: 1em;
       p{
         font-size: $font-size-default+50;
@@ -261,7 +264,7 @@ a{
   }
   // Подвал
   .footer{
-    padding:0em;
-    background-color:lighten($color-primary, 15%);
+    padding: 0;
+    background-color: lighten($color-primary, 15%);
   }
 }
