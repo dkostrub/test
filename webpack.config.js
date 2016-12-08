@@ -1,7 +1,7 @@
 'use strict';
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
-// const load = require('lodash');
+
 const webpack = require('webpack');
 const rimraf = require('rimraf');
 const BowerWebpackPlugin = require('bower-webpack-plugin');
@@ -16,13 +16,13 @@ function addHash(template, hash) {
 }
 
 module.exports = {
-    context: __dirname + '\\frontend',
+    context: __dirname + '/frontend',
 
     entry:   {
         main: './main'
     },
     output:  {
-        path: __dirname + '\\public',
+        path: __dirname + '/public',
         publicPath: '/',
         filename: addHash('[name].js', 'chunkhash'),
         chunkFilename: addHash('[id].js', 'chunkhash'),
@@ -41,11 +41,11 @@ module.exports = {
             },
             {
                 test:   /\.css$/,
-                loader:ExtractTextPlugin.extract('style!css')
+                loader:ExtractTextPlugin.extract('css!postcss')
             },
             {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract('css!resolve-url!sass?sourceMap')
+                loader: ExtractTextPlugin.extract('css!resolve-url!postcss!sass?sourceMap')
             },
 
             { test: /\.json$/, loader: 'json' },
@@ -59,7 +59,7 @@ module.exports = {
             }
         ]
     },
-    postcss: [ autoprefixer({ browsers: ['last 2 versions'] }) ],
+    postcss: [ autoprefixer({ browsers: ['last 3 versions', '> 1%'] }) ],
 
     watch: NODE_ENV == 'development',
 
@@ -86,18 +86,20 @@ module.exports = {
             name: 'common',
             minChunks: 2
         }),
-        // new CopyWebpackPlugin([
-        //     { from: 'static' }
-        // ]),
         new AssetsPlugin({
            filename: 'public.json',
             path: __dirname + '/public'
         }),
+        // new CopyWebpackPlugin([
+        //     { from: 'public' }
+        // ]),
         // new HtmlWebpackPlugin(), // Generates default index.html
         // new HtmlWebpackPlugin({  // Also generate a test.html
         //     filename: 'test.html',
-        //     template: 'src/assets/test.html'
+        //     template: '{}'
         // }),
+
+
         {
             apply: (compiler) => {
                 rimraf.sync(compiler.options.output.path);
@@ -107,7 +109,7 @@ module.exports = {
 
     resolve: {
         modulesDirectories: ['node_modules'],
-            extensions: ['', '.js', '.scss']
+            extensions: ['', '.js', '.sass']
     },
 
     resolveLoader: {
@@ -120,11 +122,21 @@ module.exports = {
 if(NODE_ENV == 'production') {
     module.exports.plugins.push(
         new webpack.optimize.UglifyJsPlugin({
+            beautify: false,
+            comments: false,
             compress: {
-                warnings: false,
+                sequences   : true,
+                booleans    : true,
+                loops       : true,
+                unused      : true,
+                warnings    : false,
                 drop_console: true,
-                unsafe: true
+                unsafe      : true
             }
+        }),
+        new webpack.optimize.AggressiveMergingPlugin({
+            minSizeReduce: 1.5,
+            moveToParents: true
         })
     );
 }

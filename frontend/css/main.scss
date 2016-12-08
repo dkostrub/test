@@ -1,7 +1,5 @@
-//@import "../node_modules/susy/sass/_susy";
-
+@import "~breakpoint-sass/stylesheets/breakpoint";
 @import "~susy/sass/susy";
-@import "~breakpoint-sass";
 @import "normalize";
 @import "reset";
 @import "variables";
@@ -9,10 +7,17 @@
 // Susy
 $susy: (
         columns: 12,
-        gutters: 1/2,
+        gutters: 1/4,
+        container: 1120px,
         math: fluid,
-        gutter-position: outside,
+        output: float,
+        gutter-position: outside
 );
+
+.layout {
+  @include container();
+  @include layout(12 1/4);
+}
 
 html,body{
   font-family: $font-family-default;
@@ -23,6 +28,7 @@ html,body{
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+
 }
 
 a{
@@ -30,12 +36,12 @@ a{
 }
 
 .container{
-  @include container($container);
+    @include container;
   background-color: $white;
 }
 
 .page-content{
-  padding: 3%;
+  padding: 3px;
   margin: 0;
 }
 
