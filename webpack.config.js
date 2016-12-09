@@ -3,13 +3,13 @@
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
 const webpack = require('webpack');
-const rimraf = require('rimraf');
 const BowerWebpackPlugin = require('bower-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const AssetsPlugin = require('assets-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanPlugin = require('clean-webpack-plugin');
 
 function addHash(template, hash) {
     return NODE_ENV == 'production'? template.replace(/\.[^.]+$/, `.[${hash}]$&`) : `${template}?hash=[${hash}]`;
@@ -41,7 +41,7 @@ module.exports = {
             },
             {
                 test:   /\.css$/,
-                loader:ExtractTextPlugin.extract('css!postcss')
+                loader:ExtractTextPlugin.extract('css?sourceMap!postcss')
             },
             {
                 test: /\.scss$/,
@@ -97,19 +97,12 @@ module.exports = {
         // new HtmlWebpackPlugin({  // Also generate a test.html
         //     filename: 'test.html',
         //     template: '{}'
-        // }),
-
-
-        {
-            apply: (compiler) => {
-                rimraf.sync(compiler.options.output.path);
-            }
-        }
+        // })
     ],
 
     resolve: {
         modulesDirectories: ['node_modules'],
-            extensions: ['', '.js', '.sass']
+            extensions: ['', '.js', '.sass', '.scss']
     },
 
     resolveLoader: {
@@ -121,6 +114,7 @@ module.exports = {
 
 if(NODE_ENV == 'production') {
     module.exports.plugins.push(
+        new webpack.optimize.DedupePlugin(),
         new webpack.optimize.UglifyJsPlugin({
             beautify: false,
             comments: false,
@@ -137,6 +131,16 @@ if(NODE_ENV == 'production') {
         new webpack.optimize.AggressiveMergingPlugin({
             minSizeReduce: 1.5,
             moveToParents: true
-        })
+        }),
+        new CleanPlugin(
+            path.join('public', 'webpack'),
+            { root: path.join(process.cwd()) }
+        ),
+        new AssetsPlugin({
+            filename: 'production.json',
+            path: __dirname + '/public/prodaction',
+            prettyPrint: true
+        }),
+        new webpack.optimize.OccurrenceOrderPlugin() // Надо проверить в необхлжимости
     );
 }
