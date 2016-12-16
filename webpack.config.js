@@ -10,9 +10,10 @@ const autoprefixer = require('autoprefixer');
 const AssetsPlugin = require('assets-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanPlugin = require('clean-webpack-plugin');
+// const Manifest = require('manifest-revision-webpack-plugin');
 
 function addHash(template, hash) {
-    return NODE_ENV == 'production'? template.replace(/\.[^.]+$/, `.[${hash}]$&`) : `${template}?hash=[${hash}]`;
+    return NODE_ENV == 'production' ? template.replace(/\.[^.]+$/, `.[${hash}]$&`) : `${template}?hash=[${hash}]`;
 }
 
 module.exports = {
@@ -23,7 +24,7 @@ module.exports = {
     },
     output:  {
         path: __dirname + '/public',
-        publicPath: '/',
+        publicPath: '/public/',
         filename: addHash('[name].js', 'chunkhash'),
         chunkFilename: addHash('[id].js', 'chunkhash'),
         library: '[name]'
@@ -32,7 +33,7 @@ module.exports = {
         loaders: [
             {
                 test: /\.js$/,
-                exclude: /(node_modules)/,
+                exclude: /node_modules/,
                 loader: 'babel',
                 query: {
                     presets: ['es2015'],
@@ -41,13 +42,14 @@ module.exports = {
             },
             {
                 test:   /\.css$/,
+                exclude: /node_modules/,
                 loader:ExtractTextPlugin.extract('css?sourceMap!postcss')
             },
             {
                 test: /\.scss$/,
+                exclude: /node_modules/,
                 loader: ExtractTextPlugin.extract('css!resolve-url!postcss!sass?sourceMap')
             },
-
             { test: /\.json$/, loader: 'json' },
 
             // { test:   /\.jade$/, loader: "jade" },
@@ -94,10 +96,73 @@ module.exports = {
         //     { from: 'public' }
         // ]),
         // new HtmlWebpackPlugin(), // Generates default index.html
-        // new HtmlWebpackPlugin({  // Also generate a test.html
-        //     filename: 'test.html',
-        //     template: '{}'
+        new HtmlWebpackPlugin({
+            title: 'Test Webpack',
+            hash: true,
+            inject: false,
+            filename: 'index.html',
+            template: __dirname + '/frontend/tpl/index.tpl.html',
+            // chunks: ['common', 'about'],
+            // environment: process.env.NODE_ENV
+
+            // Optional
+            // appMountId: 'app',
+            // baseHref: 'http://example.com/awesome',
+            // devServer: 'http://localhost:3000',
+            googleAnalytics: {
+                trackingId: 'UA-XXXX-XX',
+                pageViewOnLoad: true
+            },
+            meta: {
+                description: 'A better default template for html-webpack-plugin.'
+            },
+            mobile: true,
+            links: [
+                'https://fonts.googleapis.com/css?family=Roboto',
+                {
+                    href: '/apple-touch-icon.png',
+                    rel: 'apple-touch-icon',
+                    sizes: '180x180'
+                },
+                {
+                    href: '/favicon-32x32.png',
+                    rel: 'icon',
+                    sizes: '32x32',
+                    type: 'image/png'
+                }
+            ],
+            // inlineManifestWebpackName: 'webpackManifest', //разобраться почему не работает
+            // scripts: [
+            //     'http://example.com/somescript.js',
+            //     {
+            //         src: '/myModule.js',
+            //         type: 'module'
+            //     }
+            // ],
+            // window: {
+            //     env: {
+            //         apiHost: 'http://myapi.com/api/v1'
+            //     }
+            // }
+
+        }),
+        // new HtmlWebpackPlugin ({
+        //     files: {
+        //         css: [ "main.css" ],
+        //         js: [ "public/main.js", "public/common.js"],
+        //         chunks: {
+        //             head: {
+        //                 entry: "assets/head_bundle.js",
+        //                 css: [ "main.css" ]
+        //             },
+        //             main: {
+        //                 entry: "assets/main_bundle.js",
+        //                 css: []
+        //             },
+        //         }
+        //     }
         // })
+
     ],
 
     resolve: {
@@ -109,6 +174,13 @@ module.exports = {
         modulesDirectories: ['node_modules'],
             moduleTemplates: ['*-loader', '*'],
             extensions: ['', '.js']
+    },
+
+    devServer: {
+        host: 'localhost',
+        port: 3000,
+        contentBase: __dirname + '/frontend',
+        hot: true
     }
 };
 

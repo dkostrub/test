@@ -1,0 +1,88 @@
+<% var item, key %><% htmlWebpackPlugin.options.links = htmlWebpackPlugin.options.links || [] %><% htmlWebpackPlugin.options.meta = htmlWebpackPlugin.options.meta || {} %><% htmlWebpackPlugin.options.scripts = htmlWebpackPlugin.options.scripts || [] %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <% for (key in htmlWebpackPlugin.options.meta){ %><meta content="<%= htmlWebpackPlugin.options.meta[key] %>" name="<%= key %>"><% } %>
+    <% if (htmlWebpackPlugin.files.favicon) { %><link href="<%= htmlWebpackPlugin.files.favicon %>" rel="shortcut icon"><% } %>
+    <% for (item of htmlWebpackPlugin.options.links){ %><% if (typeof item === 'string' || item instanceof String) { item = { href: item, rel: 'stylesheet' } } %>
+    <link<% for (key in item) { %> <%= key %>="<%= item[key] %>"<% } %>><% } %>
+    <% for (key in htmlWebpackPlugin.files.css) { %><link href="<%= htmlWebpackPlugin.files.css[key] %>" rel="stylesheet"><% } %>
+</head>
+<body class="">
+<h2></h2>
+<main class="wrapper">
+    <header id="masthead">
+        <h1>TEST SUSY!</h1>
+    </header>
+    <section id="left">
+        <article class="entry">
+            <h2 class="entry-title">Entry 1</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi tempora soluta odio pariatur nisi reiciendis mollitia, ipsa corporis fugiat maiores unde, fuga suscipit officiis dicta enim voluptatem incidunt? Officiis, officia.</p>
+        </article>
+        <article class="entry">
+            <h2 class="entry-title">Entry 2</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi tempora soluta odio pariatur nisi reiciendis mollitia, ipsa corporis fugiat maiores unde, fuga suscipit officiis dicta enim voluptatem incidunt? Officiis, officia.</p>
+        </article>
+        <article class="entry">
+            <h2 class="entry-title">Entry 3</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi tempora soluta odio pariatur nisi reiciendis mollitia, ipsa corporis fugiat maiores unde, fuga suscipit officiis dicta enim voluptatem incidunt? Officiis, officia.</p>
+        </article>
+        <article class="entry">
+            <h2 class="entry-title">Entry 4</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi tempora soluta odio pariatur nisi reiciendis mollitia, ipsa corporis fugiat maiores unde, fuga suscipit officiis dicta enim voluptatem incidunt? Officiis, officia.</p>
+        </article>
+        <article class="entry">
+            <h2 class="entry-title">Entry 5</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi tempora soluta odio pariatur nisi reiciendis mollitia, ipsa corporis fugiat maiores unde, fuga suscipit officiis dicta enim voluptatem incidunt? Officiis, officia.</p>
+        </article>
+    </section>
+    <aside id="right">
+        <article class="widget">
+            <h3 class="widget-title">Widget 1</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi tempora soluta odio pariatur nisi reiciendis mollitia, ipsa corporis fugiat maiores unde, fuga suscipit officiis dicta enim voluptatem incidunt? Officiis, officia.</p>
+        </article>
+        <article class="widget">
+            <h3 class="widget-title">Widget 2</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi tempora soluta odio pariatur nisi reiciendis mollitia, ipsa corporis fugiat maiores unde, fuga suscipit officiis dicta enim voluptatem incidunt? Officiis, officia.</p>
+        </article>
+        <article class="widget">
+            <h3 class="widget-title">Widget 3</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi tempora soluta odio pariatur nisi reiciendis mollitia, ipsa corporis fugiat maiores unde, fuga suscipit officiis dicta enim voluptatem incidunt? Officiis, officia.</p>
+        </article>
+        <article class="widget">
+            <h3 class="widget-title">Widget 4</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi tempora soluta odio pariatur nisi reiciendis mollitia, ipsa corporis fugiat maiores unde, fuga suscipit officiis dicta enim voluptatem incidunt? Officiis, officia.</p>
+        </article>
+    </aside>
+    <section id="ad">
+        <h2 class="ad-title">
+            Advertisment heading
+        </h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere nesciunt, illum quia commodi quae esse, tenetur, voluptas beatae nihil provident non distinctio quas, magnam reprehenderit aliquam dignissimos ab amet vel!</p>
+    </section>
+    <section id="pre-footer">
+        <article class="pre-footer-column">
+            <h4 class="pre-footer-column-title">Column 1</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta excepturi vero officia quasi odio architecto dolore! Dicta natus at eaque nisi nobis, accusamus, suscipit fuga cupiditate ad, repudiandae ut consequuntur.</p>
+        </article>
+        <article class="pre-footer-column">
+            <h4 class="pre-footer-column-title">Column 2</h4>
+            <p>Neque cum adipisci maiores unde est, natus debitis repellat laudantium sapiente, facere ab nobis obcaecati assumenda deleniti quidem fugit? Iste vero itaque sequi nemo, quisquam, autem? Quam odio, est accusantium!</p>
+        </article>
+        <article class="pre-footer-column">
+            <h4 class="pre-footer-column-title">Column 3</h4>
+            <p>Consequuntur atque, id esse enim quibusdam sit, at ipsam, iste corrupti sequi numquam nobis sed libero earum aliquid fugiat ex quis est. Dolorem totam ex mollitia earum sunt quis veritatis?</p>
+        </article>
+    </section>
+    <footer id="colophon">
+        &copy; 2016 Test SUSY
+    </footer>
+</main>
+<% for (item of htmlWebpackPlugin.options.scripts) { %><% if (typeof item === 'string' || item instanceof String) { item = { src: item, type: 'text/javascript' } } %>
+<script<% for (key in item) { %> <%= key %>="<%= item[key] %>"<% } %>></script><% } %>
+<% for (key in htmlWebpackPlugin.files.chunks) { %>
+<script src="<%= htmlWebpackPlugin.files.chunks[key].entry %>" type="text/javascript"></script><% } %>
+</body>
+</html>

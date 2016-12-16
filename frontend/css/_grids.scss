@@ -1,0 +1,74 @@
+@import "~breakpoint-sass/stylesheets/breakpoint";
+@import "~susy/sass/susy";
+
+// Susy
+$susy: (
+        columns: 12,
+        gutters: 1/4,
+        gutter-position: after,
+        container: 1120px,
+        container-position: center,
+        math: fluid,
+        output: flexbox,
+        flow: ltr,
+        debug: (
+                image: show,
+                color: rgba(#66f, .25),
+                output: background,
+                toggle: top right,
+        )
+);
+#main {
+  @include container();
+  @include margin-trailer(2);
+  @include margin-leader(2);
+  @media screen and (max-width: 768px) {
+    margin: 0;
+  }
+}
+
+#masthead {
+  @include span(12);
+  background: rgba(green, .7);
+}
+
+#content {
+  @include span(8);
+  background: rgba(darkorange, .7);
+  @media screen and (max-width: 768px) {
+    @include span(10);
+  }
+}
+
+#sidebar {
+  @include span(4 last);
+  background: rgba(hotpink, .7);
+  @media screen and (max-width: 768px) {
+    @include span(10);
+  }
+}
+
+#ad {
+  @include span(12);
+  background: rgba(brown, .7);
+}
+
+.pre-footer-column {
+  @include span(4);
+  &:last-child {
+    @include span(4 last);
+    @media screen and (max-width: 768px) {
+      @include span(12);
+    }
+  }
+  @media screen and (max-width: 768px) {
+    @include span(12);
+  }
+}
+
+#colophon {
+  @include span(12);
+  @include padding-trailer(1);
+  @include padding-leader(1);
+  background: rgba(black, .7);
+}

@@ -4,20 +4,22 @@
 @import "reset";
 @import "variables";
 
-// Susy
 $susy: (
         columns: 12,
-        gutters: 1/4,
-        container: 1120px,
+        gutters: 1/8,
+        gutter-position: split, //split, inside
+        container: 70em,
+        container-position: center,
         math: fluid,
-        output: float,
-        gutter-position: outside
+        output: flexbox,
+        flow: ltr,
+        debug: (
+                image: show,
+                color: rgba(#66f, .25),
+                output: background,
+                toggle: top right,
+        )
 );
-
-.layout {
-  @include container();
-  @include layout(12 1/4);
-}
 
 html,body{
   font-family: $font-family-default;
@@ -28,23 +30,58 @@ html,body{
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-
 }
 
 a{
   text-decoration: none;
 }
 
-.container{
-    @include container;
-  background-color: $white;
-}
+main{
+   height: 100%;
+   @include container();
+   background-color: $white;
+ }
 
-.page-content{
-  padding: 3px;
-  margin: 0;
+header{
+  background: rgba(green, .7);
+  height: 150px;
+  width: 100%;
 }
+#masthead {
+  @include span(12);
+}
+header, article, aside, #ad, #pre-footer {
+  margin-bottom: gutter();
+}
+#left{
+  background-color: rgba(green, .3);
+  @include span(8);
+}
+#right{
+  background-color: rgba(blue, .3);
+  @include span(4 last);
+}
+#ad{
+  background-color: rgba(yellow, .3);
+  @include span(7);
+  @include push(2);
+}
+#pre-footer {
+  @include span(12);
+  background: rgba(brown, .7);
+}
+.pre-footer-column {
+  @include span(4);
 
+  &:last-child {
+    @include span(4 last);
+  }
+}
+footer{
+  @include span(12);
+  background-color: rgba(black, .3);
+  height: 100px;
+}
 // ***********************************
 // МАЛЕНЬКИЕ УСТРОЙСТВА
 // ***********************************
